@@ -1,0 +1,1 @@
+# comunnity_manager_fronted
