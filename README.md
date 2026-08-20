@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Community Manager — Frontend (React + Vite)
 
 Frontend en blanco y verde para tu API de FastAPI, con las 5 pantallas que pediste:
@@ -100,3 +101,6 @@ Tal y como planteaste: ya tienes las 5 pantallas completas. Te recomiendo:
 1. Levantar el backend con CORS activado.
 2. Probar `Communities` primero (es el CRUD que ya dominas).
 3. Ir a `Neighbors`, luego `Payments`, luego `Expenses`.
+=======
+# comunnity_manager_fronted
+>>>>>>> eff8adb628bf411e130a990cad0c8d69d8c78e9c
