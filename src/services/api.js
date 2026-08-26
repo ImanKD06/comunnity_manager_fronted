@@ -1,7 +1,5 @@
-// Centralized API client for the FastAPI backend.
-// All requests go through `request()` so error handling stays consistent.
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://oqymupzuny324qhxli4y62w7xy0sbpge.lambda-url.eu-north-1.on.aws/ ";
 
 async function request(path, options = {}) {
   const response = await fetch(`${BASE_URL}${path}`, {
@@ -15,12 +13,11 @@ async function request(path, options = {}) {
       const body = await response.json();
       detail = body.detail || detail;
     } catch {
-      // response had no JSON body
+      
     }
     throw new Error(detail);
   }
 
-  // DELETE endpoints return {"message": "Deleted"} -> still valid JSON
   return response.json();
 }
 
@@ -44,11 +41,7 @@ export const neighborsApi = {
   remove: (id) => request(`/neighbors/${id}`, { method: "DELETE" }),
 };
 
-/* ---------------- Payments ---------------- */
-// NOTE: the FastAPI router for payments is mounted with prefix "/payment"
-// (singular) in payments.py -> router = APIRouter(prefix="/payment", ...)
-// The frontend route/page is still called "Payments" (/payments) but the
-// API calls below correctly hit /payment/... to match the backend.
+
 export const paymentsApi = {
   list: () => request("/payment/"),
   create: (data) =>
@@ -59,7 +52,6 @@ export const paymentsApi = {
   markAsPaid: (id) => request(`/payment/${id}/pay`, { method: "PUT" }),
 };
 
-/* ---------------- Expenses ---------------- */
 export const expensesApi = {
   list: () => request("/expenses/"),
   create: (data) =>
@@ -69,7 +61,7 @@ export const expensesApi = {
   remove: (id) => request(`/expenses/${id}`, { method: "DELETE" }),
 };
 
-/* ---------------- Incidents ---------------- */
+
 export const incidentsApi = {
   list: () => request("/incidents/"),
   create: (data) =>
@@ -79,7 +71,7 @@ export const incidentsApi = {
   remove: (id) => request(`/incidents/${id}`, { method: "DELETE" }),
 };
 
-/* ---------------- Actas ---------------- */
+
 export const actasApi = {
   list: () => request("/actas/"),
   get: (id) => request(`/actas/${id}`),
@@ -92,8 +84,7 @@ export const actasApi = {
     request("/actas/generate", { method: "POST", body: JSON.stringify(data) }),
 };
 
-/* ---------------- AI (Ollama / Llama 3.1) ---------------- */
-// Backed by app/routers/ai.py -> prefix "/ai"
+
 export const aiApi = {
   analyzeIncident: (description) =>
     request("/ai/analyze-incident", {
