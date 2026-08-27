@@ -23,7 +23,7 @@ async function request(path, options = {}) {
 
 /* ---------------- Communities ---------------- */
 export const communitiesApi = {
-  list: () => request("/communities/"),
+  list: () => request("/communities"),
   create: (data) =>
     request("/communities/", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
