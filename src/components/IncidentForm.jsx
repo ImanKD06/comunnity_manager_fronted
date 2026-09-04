@@ -29,7 +29,7 @@ function IncidentForm({ initialData, communities = [], onSubmit, onClose }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAnalyzeWithAi = async () => {
+const handleAnalyzeWithAi = async () => {
     if (!form.description.trim()) {
       setError("Escribe una descripción antes de analizar con IA.");
       return;
@@ -40,11 +40,13 @@ function IncidentForm({ initialData, communities = [], onSubmit, onClose }) {
     try {
       const result = await aiApi.analyzeIncident(form.description);
       
-      // Mapeamos las claves en español del backend a las que usa tu JSX
+      // Manejamos si el backend devuelve un objeto directo o metido en 'analisis'
+      const data = result.analisis || result;
+      
       setAiResult({
-        category: result.categoria || result.category || "General",
-        priority: result.prioridad || result.priority || "Media",
-        recommendation: result.recomendacion || result.recommendation || ""
+        category: data.categoria || data.category || "General",
+        priority: data.prioridad || data.priority || "Media",
+        recommendation: data.recomendacion || data.recommendation || data.analisis || ""
       });
     } catch (err) {
       setError(
