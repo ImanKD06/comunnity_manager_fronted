@@ -39,11 +39,17 @@ function IncidentForm({ initialData, communities = [], onSubmit, onClose }) {
     setAiResult(null);
     try {
       const result = await aiApi.analyzeIncident(form.description);
-      setAiResult(result);
+      
+      // Mapeamos las claves en español del backend a las que usa tu JSX
+      setAiResult({
+        category: result.categoria || result.category || "General",
+        priority: result.prioridad || result.priority || "Media",
+        recommendation: result.recomendacion || result.recommendation || ""
+      });
     } catch (err) {
       setError(
         err.message ||
-          "No se pudo analizar la incidencia con IA. Comprueba que Ollama esté corriendo."
+          "No se pudo analizar la incidencia con IA. Comprueba la conexión con el servidor."
       );
     } finally {
       setAnalyzing(false);
@@ -52,11 +58,10 @@ function IncidentForm({ initialData, communities = [], onSubmit, onClose }) {
 
   const applyAiPriority = () => {
     if (!aiResult) return;
-    // The AI priority text ("Analizado") may not match our dropdown options,
-    // so only auto-apply it if it's one of the known values; otherwise leave
-    // the recommendation visible for the user to read and decide manually.
+    
+    // Si la prioridad sugerida coincide con tus opciones ("Baja", "Media", "Alta", "Urgente"), se aplica
     if (PRIORITY_OPTIONS.includes(aiResult.priority)) {
-      setForm({ ...form, priority: aiResult.priority });
+      setForm((prevForm) => ({ ...prevForm, priority: aiResult.priority }));
     }
   };
 
@@ -137,7 +142,7 @@ function IncidentForm({ initialData, communities = [], onSubmit, onClose }) {
                 }}
               />
               <span style={{ fontSize: 12, color: "var(--color-text-soft)" }}>
-                La IA (Llama 3.1 vía Ollama) sugiere categoría, prioridad y una recomendación.
+                La IA sugiere categoría, prioridad y una recomendación.
               </span>
             </div>
 
