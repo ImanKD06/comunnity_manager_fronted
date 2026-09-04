@@ -1,7 +1,6 @@
 const BASE_URL = "https://m6i5hfjwjnu3z3mmiihuwbuhwa0izria.lambda-url.eu-north-1.on.aws";
 
 async function request(path, options = {}) {
-
   const url = `${BASE_URL.replace(/\/$/, "")}${path}`;
 
   const response = await fetch(url, {
@@ -88,8 +87,9 @@ export const actasApi = {
 /* ---------------- AI Services ---------------- */
 export const aiApi = {
   analyzeIncident: (description) =>
-    request(`/incidents/analizar?descripcion=${encodeURIComponent(description)}`, {
+    request("/incidents/analizar", {
       method: "POST",
+      body: JSON.stringify({ description }),
     }),
   generateMinute: (data) =>
     request("/actas/generate", {
