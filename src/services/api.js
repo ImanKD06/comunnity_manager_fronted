@@ -1,5 +1,5 @@
 
-const BASE_URL = "https://m6i5hfjwjnu3z3mmiihuwbuhwa0izria.lambda-url.eu-north-1.on.aws";
+const BASE_URL = "https:/m6i5hfjwjnu3z3mmiihuwbuhwa0izria.lambda-url.eu-north-1.on.aws";
 
 async function request(path, options = {}) {
   const response = await fetch(`${BASE_URL}${path}`, {
