@@ -38,16 +38,17 @@ const handleAnalyzeWithAi = async () => {
     setError("");
     setAiResult(null);
     try {
-      const result = await aiApi.analyzeIncident(form.description);
-      
-      // Manejamos si el backend devuelve un objeto directo o metido en 'analisis'
-      const data = result.analisis || result;
-      
-      setAiResult({
-        category: data.categoria || data.category || "General",
-        priority: data.prioridad || data.priority || "Media",
-        recommendation: data.recomendacion || data.recommendation || data.analisis || ""
-      });
+// En tu IncidentForm.jsx
+const result = await aiApi.analyzeIncident(form.description);
+
+// Extraes la propiedad 'analisis' que envía el backend
+const data = result.analisis || result;
+
+setAiResult({
+  category: data.categoria || data.category || "General",
+  priority: data.prioridad || data.priority || "Media",
+  recommendation: data.recomendacion || data.recommendation || ""
+});
     } catch (err) {
       setError(
         err.message ||
