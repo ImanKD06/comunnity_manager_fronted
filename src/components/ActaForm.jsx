@@ -44,7 +44,7 @@ function ActaForm({ initialData, communities = [], onSubmit, onClose }) {
         content: form.content,
         community_id: Number(form.community_id) || 0,
       });
-      setForm({ ...form, content: result.content });
+      setForm((prev) => ({ ...prev, content: result.content || result.acta || "" }));
     } catch (err) {
       setError(err.message || "No se pudo generar el contenido.");
     } finally {
@@ -60,17 +60,27 @@ function ActaForm({ initialData, communities = [], onSubmit, onClose }) {
     setGeneratingAi(true);
     setError("");
     try {
+      // Encuentra el nombre de la comunidad seleccionada para dárselo a la IA
+      const selectedCommunity = communities.find(
+        (c) => String(c.id) === String(form.community_id)
+      );
+
       const result = await aiApi.generateMinute({
         title: form.title,
+        meeting_date: form.meeting_date,
         attendees: form.attendees,
         topics: form.topics,
         agreements: form.agreements,
+        community_name: selectedCommunity ? selectedCommunity.name : "",
       });
-      setForm({ ...form, content: result.content });
+
+      // Mapeamos tanto "acta" como "content" por flexibilidad
+      const generatedContent = result.acta || result.content || "";
+      setForm((prev) => ({ ...prev, content: generatedContent }));
     } catch (err) {
       setError(
         err.message ||
-          "No se pudo generar el acta con IA. Comprueba que Ollama esté corriendo."
+          "No se pudo generar el acta con IA. Comprueba la conexión con el servidor."
       );
     } finally {
       setGeneratingAi(false);
@@ -185,7 +195,15 @@ function ActaForm({ initialData, communities = [], onSubmit, onClose }) {
             </div>
 
             <div className="field">
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justify: "space-between",
+                  flexWrap: "wrap",
+                  gap: 8,
+                }}
+              >
                 <label htmlFor="content" style={{ margin: 0 }}>
                   Contenido del acta
                 </label>
@@ -196,7 +214,7 @@ function ActaForm({ initialData, communities = [], onSubmit, onClose }) {
                     onClick={handleGenerate}
                     disabled={generating || generatingAi}
                   >
-                    {generating ? "Generando..." : " Plantilla rápida"}
+                    {generating ? "Generando..." : "Plantilla rápida"}
                   </button>
                   <button
                     type="button"
@@ -225,7 +243,7 @@ function ActaForm({ initialData, communities = [], onSubmit, onClose }) {
                 }}
               />
               <span style={{ fontSize: 12, color: "var(--color-text-soft)" }}>
-                "Generar con IA" usa Llama 3.1 vía Ollama en el backend — puede tardar unos segundos.
+                "Generar con IA" redacta un acta formal completa usando Gemini.
               </span>
             </div>
           </div>
