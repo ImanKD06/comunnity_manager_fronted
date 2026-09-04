@@ -1,8 +1,10 @@
-
-const BASE_URL = "https:/m6i5hfjwjnu3z3mmiihuwbuhwa0izria.lambda-url.eu-north-1.on.aws";
+const BASE_URL = "https://m6i5hfjwjnu3z3mmiihuwbuhwa0izria.lambda-url.eu-north-1.on.aws";
 
 async function request(path, options = {}) {
-  const response = await fetch(`${BASE_URL}${path}`, {
+
+  const url = `${BASE_URL.replace(/\/$/, "")}${path}`;
+
+  const response = await fetch(url, {
     headers: { "Content-Type": "application/json" },
     ...options,
   });
@@ -12,9 +14,7 @@ async function request(path, options = {}) {
     try {
       const body = await response.json();
       detail = body.detail || detail;
-    } catch {
-      
-    }
+    } catch {}
     throw new Error(detail);
   }
 
@@ -23,9 +23,9 @@ async function request(path, options = {}) {
 
 /* ---------------- Communities ---------------- */
 export const communitiesApi = {
-  list: () => request("/communities/"),
+  list: () => request("/communities"),
   create: (data) =>
-    request("/communities/", { method: "POST", body: JSON.stringify(data) }),
+    request("/communities", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     request(`/communities/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   remove: (id) => request(`/communities/${id}`, { method: "DELETE" }),
@@ -33,50 +33,51 @@ export const communitiesApi = {
 
 /* ---------------- Neighbors ---------------- */
 export const neighborsApi = {
-  list: () => request("/neighbors/"),
+  list: () => request("/neighbors"),
   create: (data) =>
-    request("/neighbors/", { method: "POST", body: JSON.stringify(data) }),
+    request("/neighbors", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     request(`/neighbors/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   remove: (id) => request(`/neighbors/${id}`, { method: "DELETE" }),
 };
 
-
+/* ---------------- Payments ---------------- */
 export const paymentsApi = {
-  list: () => request("/payment/"),
+  list: () => request("/payment"),
   create: (data) =>
-    request("/payment/", { method: "POST", body: JSON.stringify(data) }),
+    request("/payment", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     request(`/payment/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   remove: (id) => request(`/payment/${id}`, { method: "DELETE" }),
   markAsPaid: (id) => request(`/payment/${id}/pay`, { method: "PUT" }),
 };
 
+/* ---------------- Expenses ---------------- */
 export const expensesApi = {
-  list: () => request("/expenses/"),
+  list: () => request("/expenses"),
   create: (data) =>
-    request("/expenses/", { method: "POST", body: JSON.stringify(data) }),
+    request("/expenses", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     request(`/expenses/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   remove: (id) => request(`/expenses/${id}`, { method: "DELETE" }),
 };
 
-
+/* ---------------- Incidents ---------------- */
 export const incidentsApi = {
-  list: () => request("/incidents/"),
+  list: () => request("/incidents"),
   create: (data) =>
-    request("/incidents/", { method: "POST", body: JSON.stringify(data) }),
+    request("/incidents", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     request(`/incidents/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   remove: (id) => request(`/incidents/${id}`, { method: "DELETE" }),
 };
 
-
+/* ---------------- Actas ---------------- */
 export const actasApi = {
-  list: () => request("/actas/"),
+  list: () => request("/actas"),
   get: (id) => request(`/actas/${id}`),
   create: (data) =>
-    request("/actas/", { method: "POST", body: JSON.stringify(data) }),
+    request("/actas", { method: "POST", body: JSON.stringify(data) }),
   update: (id, data) =>
     request(`/actas/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   remove: (id) => request(`/actas/${id}`, { method: "DELETE" }),
@@ -84,15 +85,14 @@ export const actasApi = {
     request("/actas/generate", { method: "POST", body: JSON.stringify(data) }),
 };
 
-
+/* ---------------- AI Services ---------------- */
 export const aiApi = {
   analyzeIncident: (description) =>
-    request("/ai/analyze-incident", {
+    request(`/incidents/analizar?descripcion=${encodeURIComponent(description)}`, {
       method: "POST",
-      body: JSON.stringify({ description }),
     }),
   generateMinute: (data) =>
-    request("/ai/generate-minute", {
+    request("/actas/generate", {
       method: "POST",
       body: JSON.stringify(data),
     }),
