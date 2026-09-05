@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <div className="mark">🌿</div>
+        <div className="mark"></div>
         <div>
           <h2>Community</h2>
           <span>Manager</span>
