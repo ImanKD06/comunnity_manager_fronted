@@ -216,14 +216,8 @@ function ActaForm({ initialData, communities = [], onSubmit, onClose }) {
                   >
                     {generating ? "Generando..." : "Plantilla rápida"}
                   </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={handleGenerateWithAi}
-                    disabled={generating || generatingAi}
-                  >
-                    {generatingAi ? "Generando con IA..." : "✨ Generar con IA"}
-                  </button>
+                 
+  
                 </div>
               </div>
               <textarea
