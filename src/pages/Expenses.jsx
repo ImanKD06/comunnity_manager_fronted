@@ -100,7 +100,7 @@ function Expenses() {
             <div className="loading-state">Cargando gastos...</div>
           ) : expenses.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">🧾</div>
+              <div className="empty-icon"></div>
               Todavía no hay gastos registrados.
             </div>
           ) : (
