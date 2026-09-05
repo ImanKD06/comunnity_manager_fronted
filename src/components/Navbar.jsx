@@ -35,7 +35,7 @@ function Navbar() {
         ))}
       </nav>
 
-      <div className="sidebar-foot">Conectado a la API en :8000</div>
+      
     </aside>
   );
 }
