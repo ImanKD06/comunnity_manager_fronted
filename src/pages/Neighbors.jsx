@@ -100,7 +100,7 @@ function Neighbors() {
             <div className="loading-state">Cargando vecinos...</div>
           ) : neighbors.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">👥</div>
+              <div className="empty-icon"></div>
               Todavía no hay vecinos registrados.
             </div>
           ) : (
