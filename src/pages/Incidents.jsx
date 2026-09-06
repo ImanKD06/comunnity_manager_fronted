@@ -107,7 +107,7 @@ function Incidents() {
             <div className="loading-state">Cargando incidencias...</div>
           ) : incidents.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">⚠️</div>
+              <div className="empty-icon"></div>
               Todavía no hay incidencias registradas.
             </div>
           ) : (
