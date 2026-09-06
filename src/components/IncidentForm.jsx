@@ -125,7 +125,7 @@ setAiResult({
                   onClick={handleAnalyzeWithAi}
                   disabled={analyzing}
                 >
-                  {analyzing ? "Analizando..." : "✨ Analizar con IA"}
+                  {analyzing ? "Analizando..." : " Analizar con IA"}
                 </button>
               </div>
               <textarea
